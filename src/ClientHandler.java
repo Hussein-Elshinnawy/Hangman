@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
     private Socket client;
@@ -59,7 +58,7 @@ public class ClientHandler implements Runnable {
                     continue;
                 
                 }else if(logged==true){
-                    System.out.println("successfully logged in");
+                    out.print(("successfully logged in"));
 
                 }else{
                     out.println("error in login or register");
