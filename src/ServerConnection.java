@@ -21,10 +21,13 @@ public class ServerConnection implements Runnable {
         try {
             while (true) {
                 serverResponse = in.readLine();
+                if(serverResponse.equals("success")){
+                    System.out.println("HANGMAN GAME OMG");
+                }
                 
                 if(serverResponse== null) break;
 
-                System.out.println("server says:" + serverResponse);
+                System.out.println("server :" + serverResponse);
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
