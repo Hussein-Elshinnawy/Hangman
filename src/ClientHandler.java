@@ -64,10 +64,11 @@ public class ClientHandler implements Runnable {
                     out.println(GameServer.firstState());
                     String str= in.readLine();
                     ArrayList<Character> playerGuesses = new ArrayList<>();
-                    for (int i = 0; i < str.length(); i++){
-                         playerGuesses.add(str.charAt(i));
-                     }
-                     out.println(playerGuesses);
+                    // for (int i = 0; i < str.length(); i++){
+                    //      playerGuesses.add(str.charAt(i));
+                    //  }
+                    playerGuesses.add(str.charAt(0));
+                    //out.println(playerGuesses);
                     out.println(GameServer.printWordState(playerGuesses));
 
                     // GameServer.printWordState(playerGuesses);

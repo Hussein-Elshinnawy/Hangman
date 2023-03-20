@@ -29,7 +29,7 @@ public class GameServer {
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(port);
 
-        Scanner scanner = new Scanner(new File("D:/2.University/year 4/term 2/New folder/Hangman/hangmanwords.txt"));
+        Scanner scanner = new Scanner(new File("hangmanwords.txt"));
         while (scanner.hasNext()) {
             words.add(scanner.nextLine());
         }
@@ -103,6 +103,19 @@ public class GameServer {
         }
         Player p = new Player(arr[0], arr[1], arr[2]);
         players.add(p);
+
+        try {
+            File myObj = new File("file"+players.size()+"name.txt");
+            if (myObj.createNewFile()) {
+              System.out.println("File created: " + myObj.getName());
+            } else {
+              System.out.println("File already exists.");
+            }
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+
         return true;
 
     }
@@ -126,10 +139,10 @@ public class GameServer {
         return builder.toString();
     }
 
-    public static String printWordState(ArrayList<Character> playerGuesses) {//a act
-        ArrayList<Character> temp = new ArrayList<>();
-        for (int i = 0; i < word.length(); i++) {
-            if (playerGuesses.contains(word.charAt(i))) {
+    public static String printWordState(ArrayList<Character> playerGuesses) {//b
+        ArrayList<Character> temp = new ArrayList<>();//b------
+        for (int i = 0; i < word.length(); i++) {//border
+            if (playerGuesses.contains(word.charAt(i))) {//
                 temp.add(word.charAt(i));
                 //System.out.print(word.charAt(i));
             } else {
