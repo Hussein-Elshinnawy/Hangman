@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -105,16 +106,26 @@ public class GameServer {
         players.add(p);
 
         try {
-            File myObj = new File("file"+players.size()+"name.txt");
+            File myObj = new File("file" + players.size() + "name.txt");
             if (myObj.createNewFile()) {
-              System.out.println("File created: " + myObj.getName());
+                System.out.println("File created: " + myObj.getName());
+                FileWriter myWriter = new FileWriter(myObj.getName());
+                myWriter.write(arr[0]);
+                myWriter.write("\r\n");
+                myWriter.write(arr[1]);
+                myWriter.write("\r\n");
+                myWriter.write(arr[2]);
+                myWriter.write("\r\n");
+                myWriter.close();
+                System.out.println("Successfully wrote to the file.");
+
             } else {
-              System.out.println("File already exists.");
+                System.out.println("File already exists.");
             }
-          } catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-          }
+        }
 
         return true;
 
@@ -130,7 +141,7 @@ public class GameServer {
         ArrayList<Character> temp = new ArrayList<>();
         for (int i = 0; i < word.length(); i++) {
             temp.add('-');
-            //System.out.print("*");
+            // System.out.print("*");
         }
         StringBuilder builder = new StringBuilder(word.length());
         for (Character ch : temp) {
@@ -139,15 +150,15 @@ public class GameServer {
         return builder.toString();
     }
 
-    public static String printWordState(ArrayList<Character> playerGuesses) {//b
-        ArrayList<Character> temp = new ArrayList<>();//b------
-        for (int i = 0; i < word.length(); i++) {//border
+    public static String printWordState(ArrayList<Character> playerGuesses) {// b
+        ArrayList<Character> temp = new ArrayList<>();// b------
+        for (int i = 0; i < word.length(); i++) {// border
             if (playerGuesses.contains(word.charAt(i))) {//
                 temp.add(word.charAt(i));
-                //System.out.print(word.charAt(i));
+                // System.out.print(word.charAt(i));
             } else {
                 temp.add('-');
-                //System.out.print("-");
+                // System.out.print("-");
             }
             System.out.print("");
         }
