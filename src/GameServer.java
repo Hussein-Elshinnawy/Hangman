@@ -24,20 +24,19 @@ public class GameServer {
 
     private static ExecutorService pool = Executors.newFixedThreadPool(4);
 
+    private static String word;
+
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(port);
-
 
         Scanner scanner = new Scanner(new File("D:/2.University/year 4/term 2/New folder/Hangman/hangmanwords.txt"));
         while (scanner.hasNext()) {
             words.add(scanner.nextLine());
         }
-        Random random = new Random();
+        // Random random = new Random();
 
-        String word = words.get(random.nextInt(words.size()));
-        System.out.println(word);
-
-
+        // word = words.get(random.nextInt(words.size()));
+        // System.out.println(word);
 
         while (true) {
             System.out.println("server is waiting for client");
@@ -105,6 +104,46 @@ public class GameServer {
         Player p = new Player(arr[0], arr[1], arr[2]);
         players.add(p);
         return true;
+
+    }
+
+    public static String generateWord() {
+        Random random = new Random();
+        word = words.get(random.nextInt(words.size()));
+        return word;
+    }
+
+    public static String firstState() {
+        ArrayList<Character> temp = new ArrayList<>();
+        for (int i = 0; i < word.length(); i++) {
+            temp.add('-');
+            //System.out.print("*");
+        }
+        StringBuilder builder = new StringBuilder(word.length());
+        for (Character ch : temp) {
+            builder.append(ch);
+        }
+        return builder.toString();
+    }
+
+    public static String printWordState(ArrayList<Character> playerGuesses) {//a act
+        ArrayList<Character> temp = new ArrayList<>();
+        for (int i = 0; i < word.length(); i++) {
+            if (playerGuesses.contains(word.charAt(i))) {
+                temp.add(word.charAt(i));
+                //System.out.print(word.charAt(i));
+            } else {
+                temp.add('-');
+                //System.out.print("-");
+            }
+            System.out.print("");
+        }
+        StringBuilder builder = new StringBuilder(word.length());
+        for (Character ch : temp) {
+            builder.append(ch);
+        }
+        System.out.println(builder.toString());
+        return builder.toString();
 
     }
 

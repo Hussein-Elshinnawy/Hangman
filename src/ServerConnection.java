@@ -21,25 +21,27 @@ public class ServerConnection implements Runnable {
         try {
             while (true) {
                 serverResponse = in.readLine();
-                if(serverResponse.equals("success")){
+                if(serverResponse== null) break;
+                if(serverResponse.equals("successfully logged in")){
                     System.out.println("HANGMAN GAME OMG");
                 }
                 
-                if(serverResponse== null) break;
 
                 System.out.println("server :" + serverResponse);
+                serverResponse=null;
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+        } 
+        // finally {
+        //     try {
+        //         in.close();
+        //     } catch (IOException e) {
+        //         // TODO Auto-generated catch block
+        //         e.printStackTrace();
+        //     }
+        // }
 
     }
 
