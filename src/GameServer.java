@@ -106,7 +106,7 @@ public class GameServer {
         players.add(p);
 
         try {
-            File myObj = new File("file" + players.size() + "name.txt");
+            File myObj = new File("user" + players.size() + "config.txt");
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
                 FileWriter myWriter = new FileWriter(myObj.getName());
