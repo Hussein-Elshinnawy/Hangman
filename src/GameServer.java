@@ -27,6 +27,10 @@ public class GameServer {
 
     private static String word;
 
+    private static ArrayList<ClientHandler> teamA = new ArrayList<>();
+
+    private static ArrayList<ClientHandler> teamB = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(port);
 
@@ -34,10 +38,19 @@ public class GameServer {
         while (scanner.hasNext()) {
             words.add(scanner.nextLine());
         }
-        // Random random = new Random();
 
-        // word = words.get(random.nextInt(words.size()));
-        // System.out.println(word);
+        // try {
+        //     File myObj = new File("gameConfiguration.txt");
+        //     if (myObj.createNewFile()) {
+        //         System.out.println("history created: " + myObj.getName());
+
+        //     } else {
+        //         System.out.println("File already exists.");
+        //     }
+        // } catch (IOException e) {
+        //     System.out.println("An error occurred.");
+        //     e.printStackTrace();
+        // }
 
         while (true) {
             System.out.println("server is waiting for client");
@@ -110,14 +123,27 @@ public class GameServer {
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
                 FileWriter myWriter = new FileWriter(myObj.getName());
-                myWriter.write(arr[0]);
-                myWriter.write("\r\n");
+                // myWriter.write(arr[0]);
+                // myWriter.write("\r\n");
                 myWriter.write(arr[1]);
                 myWriter.write("\r\n");
                 myWriter.write(arr[2]);
                 myWriter.write("\r\n");
                 myWriter.close();
                 System.out.println("Successfully wrote to the file.");
+
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        try {
+            File myObj = new File("user" + players.size() + "history.txt");
+            if (myObj.createNewFile()) {
+                System.out.println("history created: " + myObj.getName());
 
             } else {
                 System.out.println("File already exists.");
@@ -169,6 +195,16 @@ public class GameServer {
         System.out.println(builder.toString());
         return builder.toString();
 
+    }
+    public static void setPlayerTeam(char team, ClientHandler c){
+        if(team=='a'){
+            teamA.add(c);
+            System.out.println(c.toString()+" has joined team a");
+        }else if(team=='b'){
+            teamB.add(c);
+            System.out.println(c.toString()+" has joined team b");
+        }
+        
     }
 
 }

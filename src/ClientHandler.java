@@ -10,8 +10,9 @@ public class ClientHandler implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     // private PrintWriter out1;
-    private ArrayList<ClientHandler> clients;
+    private static ArrayList<ClientHandler> clients;//static was not written before
     private static boolean logged = false;
+
 
     public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
         this.client = clientSocket;
@@ -60,22 +61,36 @@ public class ClientHandler implements Runnable {
                 }
                 if (logged) {
                     out.println(("successfully logged in"));
-                    out.println(GameServer.generateWord());
-                    out.println(GameServer.firstState());
-                    String str= in.readLine();
-                    ArrayList<Character> playerGuesses = new ArrayList<>();
-                    // for (int i = 0; i < str.length(); i++){
-                    //      playerGuesses.add(str.charAt(i));
-                    //  }
-                    playerGuesses.add(str.charAt(0));
-                    //out.println(playerGuesses);
-                    out.println(GameServer.printWordState(playerGuesses));
 
-                    // GameServer.printWordState(playerGuesses);
-                    // continue;
+                    out.println(("1.singleplayer 2.multiplayer"));
+                    String playOp=in.readLine();
+                    if(playOp.equals("1")||playOp.equals("singleplayer"))
+                    {
+
+
+                    }else if(playOp.equals("2")||playOp.equals("multiplayer")){
+                        out.println("a.team b.team");
+                        char team=(char) in.read();
+                    
+                        GameServer.setPlayerTeam(team, this);
+                        String msg=GameServer.generateWord();
+                        outToAll(msg);
+
+                    }
+                    
+                    // out.println(GameServer.generateWord());
+                    // out.println(GameServer.firstState());
+                    // String str= in.readLine();
+                    // ArrayList<Character> playerGuesses = new ArrayList<>();
+                    // playerGuesses.add(str.charAt(0));
+                    // //out.println(playerGuesses);
+                    // out.println(GameServer.printWordState(playerGuesses));
+
+                    // // GameServer.printWordState(playerGuesses);
+                    // // continue;
 
                 } else {
-                    out.println("trash");
+                    out.println("Please login or register");
                 }
                 // if (request.contains("name")) {
                 // out.println(GameServer.getRandomName());

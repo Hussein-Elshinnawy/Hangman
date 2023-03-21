@@ -5,6 +5,8 @@ public class Player {
 
     public String password;
 
+    public char team;
+
    
     
     public void setName(String name) {
