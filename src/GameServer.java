@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.io.FileReader;
 
 public class GameServer {
     private static final int port = 9090;
@@ -74,36 +75,75 @@ public class GameServer {
     public static String login(String usernameNpassword) {
         boolean usernameFound = false;
         boolean passwordFound = false;
+        boolean wrongPassword= false;
+        boolean wrongpUsername= false;
         String[] arr = usernameNpassword.split(" ");// 0-user 1-pass
         
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("config.txt"));
+            String line;
 
-        for (Player aPlayer : players) {
-            if (aPlayer.username.equals(arr[0]) && aPlayer.password.equals(arr[1])) {
-                usernameFound = true;
-                passwordFound = true;
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split(" ");
+                if(split[0].equals(arr[0]) && split[1].equals(arr[1]) ){
+                    usernameFound = true;
+                    passwordFound = true;
+                    break;
+                }
+                else if( split[0].equals(arr[0]) && !split[1].equals(arr[1])){
+                    wrongPassword=true;
+                }
+                else if(!split[0].equals(arr[0]) && split[1].equals(arr[1])){
+                    wrongpUsername=true;
+                }
             }
-        }
-        for (Player aPlayer : players) {
-            if (aPlayer.username.equals(arr[0])) {
-                usernameFound = true;
+            br.close();
+            if (usernameFound && passwordFound) {
+                return "ok";
             }
-        }
-        for (Player aPlayer : players) {
-            if (aPlayer.password.equals(arr[1])) {
-                passwordFound = true;
+    
+            if (wrongpUsername) {
+                return "404";
             }
-        }
-        if (usernameFound && passwordFound) {
-            return "ok";
-        }
+            if (wrongPassword) {
+                return "401";
+            }
+            
 
-        if (!usernameFound) {
-            return "404";
+        } catch (IOException e) {
+            System.out.println("Error reading file " + "config.txt");
+            e.printStackTrace();
         }
-        if (!passwordFound) {
-            return "401";
-        }
-        return null;
+        return "no such user";
+
+
+        // for (Player aPlayer : players) {
+        //     if (aPlayer.username.equals(arr[0]) && aPlayer.password.equals(arr[1])) {
+        //         usernameFound = true;
+        //         passwordFound = true;
+        //     }
+        // }
+        // for (Player aPlayer : players) {
+        //     if (aPlayer.username.equals(arr[0])) {
+        //         usernameFound = true;
+        //     }
+        // }
+        // for (Player aPlayer : players) {
+        //     if (aPlayer.password.equals(arr[1])) {
+        //         passwordFound = true;
+        //     }
+        // }
+        // if (usernameFound && passwordFound) {
+        //     return "ok";
+        // }
+
+        // if (!usernameFound) {
+        //     return "404";
+        // }
+        // if (!passwordFound) {
+        //     return "401";
+        // }
+        // return null;
 
     }
 

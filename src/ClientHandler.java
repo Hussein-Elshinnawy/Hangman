@@ -29,6 +29,8 @@ public class ClientHandler implements Runnable {
         try {
             while (true) {
                 String request = in.readLine();
+                
+
 
                 if ((request.equals("login") || request.equals("1")) && logged == false) {
                     out.println("--login--");
@@ -42,6 +44,8 @@ public class ClientHandler implements Runnable {
                         out.println("401 error");
                     } else if (response.equals("404")) {
                         out.println("404 error");
+                    } else {
+                        out.println("no such user");
                     }
 
                 } else if (((request.equals("register") || request.equals("2")) && logged == false)) {
