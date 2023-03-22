@@ -75,6 +75,8 @@ public class GameServer {
         boolean usernameFound = false;
         boolean passwordFound = false;
         String[] arr = usernameNpassword.split(" ");// 0-user 1-pass
+        
+
         for (Player aPlayer : players) {
             if (aPlayer.username.equals(arr[0]) && aPlayer.password.equals(arr[1])) {
                 usernameFound = true;
@@ -123,7 +125,7 @@ public class GameServer {
             try {
                 FileWriter fw = new FileWriter("config.txt", true); //true - enables appending mode
                 fw.write(arr[1]);
-                fw.write("\r\n");
+                fw.write(" ");
                 fw.write(arr[2]);
                 fw.write("\r\n");
                 fw.close();
