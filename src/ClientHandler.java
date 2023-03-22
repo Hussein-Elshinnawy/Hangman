@@ -10,9 +10,8 @@ public class ClientHandler implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     // private PrintWriter out1;
-    private static ArrayList<ClientHandler> clients;//static was not written before
+    private static ArrayList<ClientHandler> clients;// static was not written before
     private static boolean logged = false;
-
 
     public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
         this.client = clientSocket;
@@ -28,9 +27,9 @@ public class ClientHandler implements Runnable {
 
         try {
             while (true) {
+                // out.println("number of theads");
+                // out.println(clients.size());
                 String request = in.readLine();
-                
-
 
                 if ((request.equals("login") || request.equals("1")) && logged == false) {
                     out.println("--login--");
@@ -67,21 +66,41 @@ public class ClientHandler implements Runnable {
                     out.println(("successfully logged in"));
 
                     out.println(("1.singleplayer 2.multiplayer"));
-                    String playOp=in.readLine();
-                    if(playOp.equals("1")||playOp.equals("singleplayer"))
-                    {
+                    String playOp = in.readLine();
+                    if (playOp.equals("1") || playOp.equals("singleplayer")) {
 
-
-                    }else if(playOp.equals("2")||playOp.equals("multiplayer")){
+                    } else if (playOp.equals("2") || playOp.equals("multiplayer")) {
+                        
                         out.println("a.team b.team");
-                        char team=(char) in.read();
-                    
-                        GameServer.setPlayerTeam(team, this);
-                        String msg=GameServer.generateWord();
+                        //for(ClientHandler c: clients){
+                        //     char team = (char) in.read();
+                        //     GameServer.setPlayerTeam(team, this);
+                        //}
+                        
+                        char team = (char) in.read();
+                        if (GameServer.evenTeam() == "you are free choose your team") {
+                            GameServer.setPlayerTeam(team, this);
+                        } else if (GameServer.evenTeam() == "no space in team a your are team b") {
+
+                            out.println("no space in team a your are team b");
+                            GameServer.setPlayerTeam('b', this);
+                        } else if (GameServer.evenTeam() == "no space in team b your are team a") {
+
+                            out.print("no space in team b your are team a");
+                            GameServer.setPlayerTeam('a', this);
+                        }
+                        
+                        out.println("waiting for other players to join");
+
+                        do{
+                            //
+                        }while(!GameServer.allTeamReady());
+                        
+                        String msg = GameServer.generateWord();
                         outToAll(msg);
 
                     }
-                    
+
                     // out.println(GameServer.generateWord());
                     // out.println(GameServer.firstState());
                     // String str= in.readLine();

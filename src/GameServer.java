@@ -256,6 +256,24 @@ public class GameServer {
 
     }
     public static void setPlayerTeam(char team, ClientHandler c){
+
+        // if (GameServer.evenTeam() == "you are free choose your team") {
+        //     if(team=='a'){
+        //         teamA.add(c);
+        //         System.out.println(c.toString()+" has joined team a");
+        //     }else if(team=='b'){
+        //         teamB.add(c);
+        //         System.out.println(c.toString()+" has joined team b");
+        //     }
+        // } else if (GameServer.evenTeam() == "no space in team a your are team b") {
+
+        //     System.out.println("no space in team a your are team b");
+        //     teamB.add(c);
+        // } else if (GameServer.evenTeam() == "no space in team b your are team a") {
+
+        //     System.out.print("no space in team b your are team a");
+        //     teamA.add(c);
+        // }    
         if(team=='a'){
             teamA.add(c);
             System.out.println(c.toString()+" has joined team a");
@@ -263,7 +281,28 @@ public class GameServer {
             teamB.add(c);
             System.out.println(c.toString()+" has joined team b");
         }
-        
     }
+
+
+    public static String evenTeam(){
+        if(teamA.size()>teamB.size() && teamA.size()==2)
+        {
+            return "no space in team a your are team b";
+        }else if(teamA.size()<teamB.size() && teamB.size()==2){
+            return "no space in team b your are team a";
+        }
+        return "you are free choose your team";
+    }
+
+
+    public static boolean allTeamReady(){
+        if(teamA.size()==2 && teamB.size()==2){ 
+            return true;
+        }
+        return false;
+    }
+
+
+    
 
 }

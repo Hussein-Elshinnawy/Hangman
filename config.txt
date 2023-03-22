@@ -2,3 +2,4 @@ user pass
 hasbi hasbi
 simo simo
 clork pass
+ok ok
