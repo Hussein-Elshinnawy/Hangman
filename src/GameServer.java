@@ -16,7 +16,7 @@ import java.io.FileReader;
 public class GameServer {
     private static final int port = 9090;
 
-    private static ArrayList<Player> players = new ArrayList<>();
+    //private static ArrayList<Player> players = new ArrayList<>();
 
     private static ArrayList<String> words = new ArrayList<>();
 
@@ -150,15 +150,15 @@ public class GameServer {
     public static boolean register(String nameNusernameNpassword) {
         String[] arr = nameNusernameNpassword.split(" ");// 0-
 
-        for (Player aPlayer : players) {
+        // for (Player aPlayer : players) {
 
-            if (aPlayer.username.equals(arr[1])) {//
+        //     if (aPlayer.username.equals(arr[1])) {//
 
-                return false;
-            }
-        }
-        Player p = new Player(arr[0], arr[1], arr[2]);
-        players.add(p);
+        //         return false;
+        //     }
+        // }
+        // Player p = new Player(arr[0], arr[1], arr[2]);
+        // players.add(p);
 
     
             FileWriter myWriter;
