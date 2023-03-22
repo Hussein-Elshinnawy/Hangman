@@ -118,40 +118,57 @@ public class GameServer {
         Player p = new Player(arr[0], arr[1], arr[2]);
         players.add(p);
 
-        try {
-            File myObj = new File("user" + players.size() + "config.txt");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-                FileWriter myWriter = new FileWriter(myObj.getName());
-                // myWriter.write(arr[0]);
-                // myWriter.write("\r\n");
-                myWriter.write(arr[1]);
-                myWriter.write("\r\n");
-                myWriter.write(arr[2]);
-                myWriter.write("\r\n");
-                myWriter.close();
-                System.out.println("Successfully wrote to the file.");
-
-            } else {
-                System.out.println("File already exists.");
+    
+            FileWriter myWriter;
+            try {
+                FileWriter fw = new FileWriter("config.txt", true); //true - enables appending mode
+                fw.write(arr[1]);
+                fw.write("\r\n");
+                fw.write(arr[2]);
+                fw.write("\r\n");
+                fw.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+            // myWriter.write(arr[0]);
+            // myWriter.write("\r\n");
+          
+            System.out.println("Successfully wrote to the file.");
+        // try {
+        //     File myObj = new File("user" + players.size() + "config.txt");
+        //     if (myObj.createNewFile()) {
+        //         System.out.println("File created: " + myObj.getName());
+        //         FileWriter myWriter = new FileWriter(myObj.getName());
+        //         // myWriter.write(arr[0]);
+        //         // myWriter.write("\r\n");
+        //         myWriter.write(arr[1]);
+        //         myWriter.write("\r\n");
+        //         myWriter.write(arr[2]);
+        //         myWriter.write("\r\n");
+        //         myWriter.close();
+        //         System.out.println("Successfully wrote to the file.");
 
-        try {
-            File myObj = new File("user" + players.size() + "history.txt");
-            if (myObj.createNewFile()) {
-                System.out.println("history created: " + myObj.getName());
+        //     } else {
+        //         System.out.println("File already exists.");
+        //     }
+        // } catch (IOException e) {
+        //     System.out.println("An error occurred.");
+        //     e.printStackTrace();
+        // }
 
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+        // try {
+        //     File myObj = new File("user" + players.size() + "history.txt");
+        //     if (myObj.createNewFile()) {
+        //         System.out.println("history created: " + myObj.getName());
+
+        //     } else {
+        //         System.out.println("File already exists.");
+        //     }
+        // } catch (IOException e) {
+        //     System.out.println("An error occurred.");
+        //     e.printStackTrace();
+        // }
 
         return true;
 

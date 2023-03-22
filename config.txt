@@ -1,0 +1,6 @@
+user
+pass
+hi
+hi
+ok
+ok
