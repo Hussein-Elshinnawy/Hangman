@@ -70,13 +70,13 @@ public class ClientHandler implements Runnable {
                     if (playOp.equals("1") || playOp.equals("singleplayer")) {
 
                     } else if (playOp.equals("2") || playOp.equals("multiplayer")) {
-                        
+
                         out.println("a.team b.team");
-                        //for(ClientHandler c: clients){
-                        //     char team = (char) in.read();
-                        //     GameServer.setPlayerTeam(team, this);
-                        //}
-                        
+                        // for(ClientHandler c: clients){
+                        // char team = (char) in.read();
+                        // GameServer.setPlayerTeam(team, this);
+                        // }
+
                         char team = (char) in.read();
                         if (GameServer.evenTeam() == "you are free choose your team") {
                             GameServer.setPlayerTeam(team, this);
@@ -89,15 +89,35 @@ public class ClientHandler implements Runnable {
                             out.print("no space in team b your are team a");
                             GameServer.setPlayerTeam('a', this);
                         }
-                        
+
                         out.println("waiting for other players to join");
 
-                        do{
+                        do {
                             //
-                        }while(!GameServer.allTeamReady());
-                        
-                        String msg = GameServer.generateWord();
+                        } while (!GameServer.allTeamReady());
+
+                        String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
                         outToAll(msg);
+                        String baba = in.readLine();
+                        out.print(baba.isBlank());
+
+                        while(true){
+                        baba = in.readLine();
+                        out.print(baba.isBlank());
+                        if(baba.equals("logout")){
+                            // out.close();
+                            // in.close();
+                            logged=false;
+                            break;
+                        }
+                        ArrayList<Character> playerGuesses = new ArrayList<>();
+                        playerGuesses.add(baba.charAt(0));
+                        out.println(playerGuesses);
+                        out.println(GameServer.printWordState(playerGuesses));
+                        
+                        }
+
+                        // GameServer.printWordState(playerGuesses);
 
                     }
 
