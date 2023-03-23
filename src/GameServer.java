@@ -229,6 +229,10 @@ public class GameServer {
         playerGuesses=null;
     }
 
+    public static boolean attempts(){
+        return true;
+    }
+
     // private void outToAll(String msg) {
     //     for (ClientHandler aClient : clients) {
     //         aClient.out.println(msg);

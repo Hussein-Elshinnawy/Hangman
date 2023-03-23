@@ -64,12 +64,14 @@ public class ClientHandler implements Runnable {
 
                 }
                 if (logged) {
+                    logged=false;
                     out.println(("successfully logged in"));
 
                     out.println(("1.singleplayer 2.multiplayer"));
                     String playOp = in.readLine();
                     if (playOp.equals("1") || playOp.equals("singleplayer")) {
 
+                        int numberOfTemp;
                         String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
                         out.println(msg);
                         GameServer.resetPlayerGuess();
@@ -89,10 +91,10 @@ public class ClientHandler implements Runnable {
                            
                         }
                         else{
-                            logged=false;
-                            break;
+                                logged=false;
+                                break;
+                            }
                         }
-                    }
                         //////////////////////////////////////////////////////////////////////////////////////////////////
                     } else if (playOp.equals("2") || playOp.equals("multiplayer")) {
 
@@ -121,6 +123,8 @@ public class ClientHandler implements Runnable {
                             //
                         } while (!GameServer.allTeamReady());
 
+                        // String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
+                        // out.println(msg);
                         if(GameServer.firstTime()){
                             String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
                             outToAll(msg);
@@ -135,7 +139,8 @@ public class ClientHandler implements Runnable {
                         while(true){
                         out.print("please enter a guess");
                         String baba = in.readLine();
-                        out.print(baba.isBlank());
+                        if(baba.isBlank())
+                        {System.out.println("baba in empty");}
                         if(!baba.equals("logout")){
                             // out.close();
                             // in.close();
@@ -147,6 +152,7 @@ public class ClientHandler implements Runnable {
                            
                         }
                         else{
+                            out.print("quit");
                             logged=false;
                             break;
                         }
