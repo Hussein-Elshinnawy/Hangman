@@ -16,7 +16,7 @@ import java.io.FileReader;
 public class GameServer {
     private static final int port = 9090;
 
-    //private static ArrayList<Player> players = new ArrayList<>();
+    // private static ArrayList<Player> players = new ArrayList<>();
 
     private static ArrayList<String> words = new ArrayList<>();
 
@@ -32,11 +32,17 @@ public class GameServer {
 
     private static ArrayList<ClientHandler> teamB = new ArrayList<>();
 
-    private static boolean first=true;
+    private static boolean first = true;
 
     private static ArrayList<Character> temp = new ArrayList<>();
 
-    //private static ArrayList<Character> playerguess = new  ArrayList<>();
+    private static int numberOfAttempts;
+
+    private static int minNumTeams;
+
+    private static int maxNumTeams;
+
+    // private static ArrayList<Character> playerguess = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(port);
@@ -45,18 +51,40 @@ public class GameServer {
         while (scanner.hasNext()) {
             words.add(scanner.nextLine());
         }
+        scanner.close();
+
+
+        try {
+
+            BufferedReader buff = new BufferedReader(new FileReader("gameConfiguration.txt"));
+            String line;
+
+            while ((line = buff.readLine()) != null) {
+                String[] split = line.split(" ");
+
+                numberOfAttempts = Integer.parseInt(split[0]);
+
+                minNumTeams = Integer.parseInt(split[1]);
+
+                maxNumTeams = Integer.parseInt(split[2]);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error reading file " + "gameConfiguration.txt");
+            e.printStackTrace();
+        }
 
         // try {
-        //     File myObj = new File("gameConfiguration.txt");
-        //     if (myObj.createNewFile()) {
-        //         System.out.println("history created: " + myObj.getName());
+        // File myObj = new File("gameConfiguration.txt");
+        // if (myObj.createNewFile()) {
+        // System.out.println("history created: " + myObj.getName());
 
-        //     } else {
-        //         System.out.println("File already exists.");
-        //     }
+        // } else {
+        // System.out.println("File already exists.");
+        // }
         // } catch (IOException e) {
-        //     System.out.println("An error occurred.");
-        //     e.printStackTrace();
+        // System.out.println("An error occurred.");
+        // e.printStackTrace();
         // }
 
         while (true) {
@@ -81,40 +109,37 @@ public class GameServer {
     public static String login(String usernameNpassword) {
         boolean usernameFound = false;
         boolean passwordFound = false;
-        boolean wrongPassword= false;
-        boolean wrongpUsername= false;
+        boolean wrongPassword = false;
+        boolean wrongpUsername = false;
         String[] arr = usernameNpassword.split(" ");// 0-user 1-pass
-        
+
         try {
             BufferedReader br = new BufferedReader(new FileReader("config.txt"));
             String line;
 
             while ((line = br.readLine()) != null) {
                 String[] split = line.split(" ");
-                if(split[0].equals(arr[0]) && split[1].equals(arr[1]) ){
+                if (split[0].equals(arr[0]) && split[1].equals(arr[1])) {
                     usernameFound = true;
                     passwordFound = true;
                     break;
-                }
-                else if( split[0].equals(arr[0]) && !split[1].equals(arr[1])){
-                    wrongPassword=true;
-                }
-                else if(!split[0].equals(arr[0]) && split[1].equals(arr[1])){
-                    wrongpUsername=true;
+                } else if (split[0].equals(arr[0]) && !split[1].equals(arr[1])) {
+                    wrongPassword = true;
+                } else if (!split[0].equals(arr[0]) && split[1].equals(arr[1])) {
+                    wrongpUsername = true;
                 }
             }
             br.close();
             if (usernameFound && passwordFound) {
                 return "ok";
             }
-    
+
             if (wrongpUsername) {
                 return "404";
             }
             if (wrongPassword) {
                 return "401";
             }
-            
 
         } catch (IOException e) {
             System.out.println("Error reading file " + "config.txt");
@@ -125,23 +150,23 @@ public class GameServer {
     }
 
     public static boolean register(String nameNusernameNpassword) {
-        String[] arr = nameNusernameNpassword.split(" ");// 0-    
-            FileWriter myWriter;
-            try {
-                FileWriter fw = new FileWriter("config.txt", true); //true - enables appending mode
-                fw.write(arr[1]);
-                fw.write(" ");
-                fw.write(arr[2]);
-                fw.write("\r\n");
-                fw.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            // myWriter.write(arr[0]);
-            // myWriter.write("\r\n");
-          
-            System.out.println("Successfully wrote to the file.");
+        String[] arr = nameNusernameNpassword.split(" ");// 0-
+        FileWriter myWriter;
+        try {
+            FileWriter fw = new FileWriter("config.txt", true); // true - enables appending mode
+            fw.write(arr[1]);
+            fw.write(" ");
+            fw.write(arr[2]);
+            fw.write("\r\n");
+            fw.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        // myWriter.write(arr[0]);
+        // myWriter.write("\r\n");
+
+        System.out.println("Successfully wrote to the file.");
 
         return true;
 
@@ -154,7 +179,7 @@ public class GameServer {
     }
 
     public static String firstState() {
-        
+
         for (int i = 0; i < word.length(); i++) {
             temp.add('-');
             // System.out.print("*");
@@ -169,76 +194,77 @@ public class GameServer {
     public static String printWordState(Character Guesses) {// b
         // ArrayList<Character> temp = new ArrayList<>();// b------
         for (int i = 0; i < word.length(); i++) {// border
-            if (Character.toLowerCase(Guesses)==Character.toLowerCase(word.charAt(i))) {//
-                //System.out.println("character "+ word.charAt(i));
+            if (Character.toLowerCase(Guesses) == Character.toLowerCase(word.charAt(i))) {//
+                // System.out.println("character "+ word.charAt(i));
                 temp.set(i, word.charAt(i));
-                //System.out.println(temp.toString());
+                // System.out.println(temp.toString());
                 // System.out.print(word.charAt(i));
-            } 
+            }
             // else {
-            //     temp.set(i, '-');
-            //     // System.out.print("-");
+            // temp.set(i, '-');
+            // // System.out.print("-");
             // }
         }
-         StringBuilder builder = new StringBuilder(word.length());
-         for (Character ch : temp) {
-             builder.append(ch);
-         }
-         System.out.println(builder.toString());
+        StringBuilder builder = new StringBuilder(word.length());
+        for (Character ch : temp) {
+            builder.append(ch);
+        }
+        System.out.println(builder.toString());
         return builder.toString();
-        //return temp;
+        // return temp;
 
     }
-    public static void setPlayerTeam(char team, ClientHandler c){
-        if(team=='a'){
+
+    public static void setPlayerTeam(char team, ClientHandler c) {
+        if (team == 'a') {
             teamA.add(c);
-            System.out.println(c.toString()+" has joined team a");
-        }else if(team=='b'){
+            System.out.println(c.toString() + " has joined team a");
+        } else if (team == 'b') {
             teamB.add(c);
-            System.out.println(c.toString()+" has joined team b");
+            System.out.println(c.toString() + " has joined team b");
         }
     }
 
-
-    public static String evenTeam(){
-        if(teamA.size()>teamB.size() && teamA.size()==2)
-        {
+    public static String evenTeam() {
+        if (teamA.size() > teamB.size() && teamA.size() == 2) {
             return "no space in team a your are team b";
-        }else if(teamA.size()<teamB.size() && teamB.size()==2){
+        } else if (teamA.size() < teamB.size() && teamB.size() == 2) {
             return "no space in team b your are team a";
         }
         return "you are free choose your team";
     }
 
     public static boolean firstTime() {
-        if(first){
-            first=false;
+        if (first) {
+            first = false;
             return true;
         }
         return false;
     }
 
-    public static boolean allTeamReady(){
-        if(teamA.size()==2 && teamB.size()==2){ 
+    public static boolean allTeamReady() {
+        if (teamA.size() == 2 && teamB.size() == 2) {
             return true;
         }
         return false;
     }
 
-    public static void resetPlayerGuess(){
-        playerGuesses=null;
+    public static void resetPlayerGuess() {
+        playerGuesses = null;
     }
 
-    public static boolean attempts(){
-        return true;
+    public static boolean isAttempts(int attemptsLeft) {
+        if(attemptsLeft>0)
+        {
+            return true;
+        }
+        return false;
     }
 
     // private void outToAll(String msg) {
-    //     for (ClientHandler aClient : clients) {
-    //         aClient.out.println(msg);
-    //     }
+    // for (ClientHandler aClient : clients) {
+    // aClient.out.println(msg);
     // }
-   
-    
+    // }
 
 }
