@@ -166,13 +166,13 @@ public class GameServer {
         return builder.toString();
     }
 
-    public static String printWordState(ArrayList<Character> Guesses) {// b
+    public static String printWordState(Character Guesses) {// b
         // ArrayList<Character> temp = new ArrayList<>();// b------
         for (int i = 0; i < word.length(); i++) {// border
-            if (Guesses.contains(word.charAt(i))) {//
-                System.out.println("character "+ word.charAt(i));
+            if (Character.toLowerCase(Guesses)==Character.toLowerCase(word.charAt(i))) {//
+                //System.out.println("character "+ word.charAt(i));
                 temp.set(i, word.charAt(i));
-                System.out.println(temp.toString());
+                //System.out.println(temp.toString());
                 // System.out.print(word.charAt(i));
             } 
             // else {

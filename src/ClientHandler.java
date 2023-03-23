@@ -84,8 +84,8 @@ public class ClientHandler implements Runnable {
                             // out.close();
                             // in.close();
                             
-                            ArrayList<Character> playerGuesses = new ArrayList<>();
-                            playerGuesses.add(baba.charAt(0));
+                            //ArrayList<Character> playerGuesses = new ArrayList<>();
+                            Character playerGuesses = baba.charAt(0);
                             out.println(playerGuesses);
                             out.println(GameServer.printWordState(playerGuesses));
                            
@@ -145,8 +145,10 @@ public class ClientHandler implements Runnable {
                             // out.close();
                             // in.close();
                             
-                            ArrayList<Character> playerGuesses = new ArrayList<>();
-                            playerGuesses.add(baba.charAt(0));
+                            // ArrayList<Character> playerGuesses = new ArrayList<>();
+                            // playerGuesses.add(baba.charAt(0));
+
+                            Character playerGuesses = baba.charAt(0);
                             out.println(playerGuesses);
                             out.println(GameServer.printWordState(playerGuesses));
                            
