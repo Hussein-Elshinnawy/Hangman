@@ -32,6 +32,12 @@ public class GameServer {
 
     private static ArrayList<ClientHandler> teamB = new ArrayList<>();
 
+    private static boolean first=true;
+
+    private static ArrayList<Character> temp = new ArrayList<>();
+
+    //private static ArrayList<Character> playerguess = new  ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(port);
 
@@ -116,51 +122,10 @@ public class GameServer {
         }
         return "no such user";
 
-
-        // for (Player aPlayer : players) {
-        //     if (aPlayer.username.equals(arr[0]) && aPlayer.password.equals(arr[1])) {
-        //         usernameFound = true;
-        //         passwordFound = true;
-        //     }
-        // }
-        // for (Player aPlayer : players) {
-        //     if (aPlayer.username.equals(arr[0])) {
-        //         usernameFound = true;
-        //     }
-        // }
-        // for (Player aPlayer : players) {
-        //     if (aPlayer.password.equals(arr[1])) {
-        //         passwordFound = true;
-        //     }
-        // }
-        // if (usernameFound && passwordFound) {
-        //     return "ok";
-        // }
-
-        // if (!usernameFound) {
-        //     return "404";
-        // }
-        // if (!passwordFound) {
-        //     return "401";
-        // }
-        // return null;
-
     }
 
     public static boolean register(String nameNusernameNpassword) {
-        String[] arr = nameNusernameNpassword.split(" ");// 0-
-
-        // for (Player aPlayer : players) {
-
-        //     if (aPlayer.username.equals(arr[1])) {//
-
-        //         return false;
-        //     }
-        // }
-        // Player p = new Player(arr[0], arr[1], arr[2]);
-        // players.add(p);
-
-    
+        String[] arr = nameNusernameNpassword.split(" ");// 0-    
             FileWriter myWriter;
             try {
                 FileWriter fw = new FileWriter("config.txt", true); //true - enables appending mode
@@ -177,40 +142,6 @@ public class GameServer {
             // myWriter.write("\r\n");
           
             System.out.println("Successfully wrote to the file.");
-        // try {
-        //     File myObj = new File("user" + players.size() + "config.txt");
-        //     if (myObj.createNewFile()) {
-        //         System.out.println("File created: " + myObj.getName());
-        //         FileWriter myWriter = new FileWriter(myObj.getName());
-        //         // myWriter.write(arr[0]);
-        //         // myWriter.write("\r\n");
-        //         myWriter.write(arr[1]);
-        //         myWriter.write("\r\n");
-        //         myWriter.write(arr[2]);
-        //         myWriter.write("\r\n");
-        //         myWriter.close();
-        //         System.out.println("Successfully wrote to the file.");
-
-        //     } else {
-        //         System.out.println("File already exists.");
-        //     }
-        // } catch (IOException e) {
-        //     System.out.println("An error occurred.");
-        //     e.printStackTrace();
-        // }
-
-        // try {
-        //     File myObj = new File("user" + players.size() + "history.txt");
-        //     if (myObj.createNewFile()) {
-        //         System.out.println("history created: " + myObj.getName());
-
-        //     } else {
-        //         System.out.println("File already exists.");
-        //     }
-        // } catch (IOException e) {
-        //     System.out.println("An error occurred.");
-        //     e.printStackTrace();
-        // }
 
         return true;
 
@@ -223,7 +154,7 @@ public class GameServer {
     }
 
     public static String firstState() {
-        ArrayList<Character> temp = new ArrayList<>();
+        
         for (int i = 0; i < word.length(); i++) {
             temp.add('-');
             // System.out.print("*");
@@ -235,45 +166,30 @@ public class GameServer {
         return builder.toString();
     }
 
-    public static String printWordState(ArrayList<Character> playerGuesses) {// b
-        ArrayList<Character> temp = new ArrayList<>();// b------
+    public static String printWordState(ArrayList<Character> Guesses) {// b
+        // ArrayList<Character> temp = new ArrayList<>();// b------
         for (int i = 0; i < word.length(); i++) {// border
-            if (playerGuesses.contains(word.charAt(i))) {//
-                temp.add(word.charAt(i));
+            if (Guesses.contains(word.charAt(i))) {//
+                System.out.println("character "+ word.charAt(i));
+                temp.set(i, word.charAt(i));
+                System.out.println(temp.toString());
                 // System.out.print(word.charAt(i));
-            } else {
-                temp.add('-');
-                // System.out.print("-");
-            }
-            System.out.print("");
+            } 
+            // else {
+            //     temp.set(i, '-');
+            //     // System.out.print("-");
+            // }
         }
-        StringBuilder builder = new StringBuilder(word.length());
-        for (Character ch : temp) {
-            builder.append(ch);
-        }
-        System.out.println(builder.toString());
+         StringBuilder builder = new StringBuilder(word.length());
+         for (Character ch : temp) {
+             builder.append(ch);
+         }
+         System.out.println(builder.toString());
         return builder.toString();
+        //return temp;
 
     }
     public static void setPlayerTeam(char team, ClientHandler c){
-
-        // if (GameServer.evenTeam() == "you are free choose your team") {
-        //     if(team=='a'){
-        //         teamA.add(c);
-        //         System.out.println(c.toString()+" has joined team a");
-        //     }else if(team=='b'){
-        //         teamB.add(c);
-        //         System.out.println(c.toString()+" has joined team b");
-        //     }
-        // } else if (GameServer.evenTeam() == "no space in team a your are team b") {
-
-        //     System.out.println("no space in team a your are team b");
-        //     teamB.add(c);
-        // } else if (GameServer.evenTeam() == "no space in team b your are team a") {
-
-        //     System.out.print("no space in team b your are team a");
-        //     teamA.add(c);
-        // }    
         if(team=='a'){
             teamA.add(c);
             System.out.println(c.toString()+" has joined team a");
@@ -294,6 +210,13 @@ public class GameServer {
         return "you are free choose your team";
     }
 
+    public static boolean firstTime() {
+        if(first){
+            first=false;
+            return true;
+        }
+        return false;
+    }
 
     public static boolean allTeamReady(){
         if(teamA.size()==2 && teamB.size()==2){ 
@@ -302,9 +225,16 @@ public class GameServer {
         return false;
     }
 
+    public static void resetPlayerGuess(){
+        playerGuesses=null;
+    }
 
-
-
+    // private void outToAll(String msg) {
+    //     for (ClientHandler aClient : clients) {
+    //         aClient.out.println(msg);
+    //     }
+    // }
+   
     
 
 }

@@ -25,6 +25,10 @@ public class ServerConnection implements Runnable {
                 if(serverResponse.equals("successfully logged in")){
                     System.out.println("HANGMAN GAME OMG");
                 }
+                if(serverResponse.equals("please enter a guess"))
+                {
+                    System.out.println(serverResponse);
+                }
                 
 
                 System.out.println("server :" + serverResponse);

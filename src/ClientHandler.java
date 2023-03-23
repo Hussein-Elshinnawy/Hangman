@@ -12,6 +12,7 @@ public class ClientHandler implements Runnable {
     // private PrintWriter out1;
     private static ArrayList<ClientHandler> clients;// static was not written before
     private static boolean logged = false;
+    
 
     public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
         this.client = clientSocket;
@@ -69,6 +70,30 @@ public class ClientHandler implements Runnable {
                     String playOp = in.readLine();
                     if (playOp.equals("1") || playOp.equals("singleplayer")) {
 
+                        String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
+                        out.println(msg);
+                        GameServer.resetPlayerGuess();
+
+                        while(true){
+                        out.println("please enter a guess");
+                        String baba = in.readLine();
+                        //out.print(baba.isBlank());
+                        if(!baba.equals("logout")){
+                            // out.close();
+                            // in.close();
+                            
+                            ArrayList<Character> playerGuesses = new ArrayList<>();
+                            playerGuesses.add(baba.charAt(0));
+                            out.println(playerGuesses);
+                            out.println(GameServer.printWordState(playerGuesses));
+                           
+                        }
+                        else{
+                            logged=false;
+                            break;
+                        }
+                    }
+                        //////////////////////////////////////////////////////////////////////////////////////////////////
                     } else if (playOp.equals("2") || playOp.equals("multiplayer")) {
 
                         out.println("a.team b.team");
@@ -96,24 +121,36 @@ public class ClientHandler implements Runnable {
                             //
                         } while (!GameServer.allTeamReady());
 
-                        String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
-                        outToAll(msg);
+                        if(GameServer.firstTime()){
+                            String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
+                            outToAll(msg);
+                        }
+                        // String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
+                        // outToAll(msg);
+                        //out.print("client number "+this+" "+this.client);
+                        // in.reset();
+                        // String baba = in.readLine();
+                        // out.print(baba.isBlank());
+                        GameServer.resetPlayerGuess();
+                        while(true){
+                        out.print("please enter a guess");
                         String baba = in.readLine();
                         out.print(baba.isBlank());
-
-                        while(true){
-                        baba = in.readLine();
-                        out.print(baba.isBlank());
-                        if(baba.equals("logout")){
+                        if(!baba.equals("logout")){
                             // out.close();
                             // in.close();
+                            
+                            ArrayList<Character> playerGuesses = new ArrayList<>();
+                            playerGuesses.add(baba.charAt(0));
+                            out.println(playerGuesses);
+                            out.println(GameServer.printWordState(playerGuesses));
+                           
+                        }
+                        else{
                             logged=false;
                             break;
                         }
-                        ArrayList<Character> playerGuesses = new ArrayList<>();
-                        playerGuesses.add(baba.charAt(0));
-                        out.println(playerGuesses);
-                        out.println(GameServer.printWordState(playerGuesses));
+                       
                         
                         }
 
@@ -162,11 +199,11 @@ public class ClientHandler implements Runnable {
         }
 
     }
-
-    private void outToAll(String msg) {
+    public void outToAll(String msg) {
         for (ClientHandler aClient : clients) {
             aClient.out.println(msg);
         }
     }
+    
 
 }
