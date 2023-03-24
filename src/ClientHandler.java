@@ -12,6 +12,7 @@ public class ClientHandler implements Runnable {
     // private PrintWriter out1;
     private static ArrayList<ClientHandler> clients;// static was not written before
     private static boolean logged = false;
+    private static int attemptsleft;
     
 
     public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
@@ -21,6 +22,7 @@ public class ClientHandler implements Runnable {
         out = new PrintWriter(client.getOutputStream(), true);
         // out1 = new PrintWriter(client.getOutputStream(), true);
         this.logged = false;
+        
     }
 
     @Override
@@ -28,6 +30,7 @@ public class ClientHandler implements Runnable {
 
         try {
             while (true) {
+                attemptsleft=GameServer.getNumberOfAttempts();
                 // out.println("number of theads");
                 // out.println(clients.size());
                 String request = in.readLine();
@@ -71,13 +74,14 @@ public class ClientHandler implements Runnable {
                     String playOp = in.readLine();
                     if (playOp.equals("1") || playOp.equals("singleplayer")) {
 
-                        int numberOfTemp;
-                        String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
+                        int numberOfAtemp;
+                        String wordGen=GameServer.generateWord();
+                        String msg = wordGen + "\n" + GameServer.firstState();
                         out.println(msg);
                         GameServer.resetPlayerGuess();
 
-                        while(true){
                         out.println("please enter a guess");
+                        while(GameServer.isAttempts(attemptsleft)){
                         String baba = in.readLine();
                         //out.print(baba.isBlank());
                         if(!baba.equals("logout")){
@@ -88,6 +92,9 @@ public class ClientHandler implements Runnable {
                             Character playerGuesses = baba.charAt(0);
                             out.println(playerGuesses);
                             out.println(GameServer.printWordState(playerGuesses));
+                            if(!GameServer.charFound()){
+                                attemptsleft--;
+                            }
                            
                         }
                         else{
@@ -95,6 +102,7 @@ public class ClientHandler implements Runnable {
                                 break;
                             }
                         }
+                        out.println("GAMEOVER YOU LOST \n your are out of attempts the word was "+ wordGen);
                         //////////////////////////////////////////////////////////////////////////////////////////////////
                     } else if (playOp.equals("2") || playOp.equals("multiplayer")) {
 

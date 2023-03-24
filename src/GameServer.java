@@ -1,9 +1,8 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.io.FileReader;
 
 public class GameServer {
     private static final int port = 9090;
@@ -42,8 +40,11 @@ public class GameServer {
 
     private static int maxNumTeams;
 
+    public static boolean flag;
+
     // private static ArrayList<Character> playerguess = new ArrayList<>();
 
+    
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(port);
 
@@ -193,10 +194,12 @@ public class GameServer {
 
     public static String printWordState(Character Guesses) {// b
         // ArrayList<Character> temp = new ArrayList<>();// b------
+        flag=false;
         for (int i = 0; i < word.length(); i++) {// border
             if (Character.toLowerCase(Guesses) == Character.toLowerCase(word.charAt(i))) {//
                 // System.out.println("character "+ word.charAt(i));
                 temp.set(i, word.charAt(i));
+                flag=true;
                 // System.out.println(temp.toString());
                 // System.out.print(word.charAt(i));
             }
@@ -261,10 +264,17 @@ public class GameServer {
         return false;
     }
 
-    // private void outToAll(String msg) {
-    // for (ClientHandler aClient : clients) {
-    // aClient.out.println(msg);
-    // }
-    // }
+    public static int getNumberOfAttempts() {
+        return numberOfAttempts;
+    }
+
+    public static boolean charFound(){
+        return flag;
+
+    }
+
+  
+
+
 
 }
