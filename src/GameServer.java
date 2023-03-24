@@ -42,6 +42,10 @@ public class GameServer {
 
     public static boolean flag;
 
+    public static boolean flag1=true;
+
+    public static String dashes;
+
     // private static ArrayList<Character> playerguess = new ArrayList<>();
 
     
@@ -189,6 +193,7 @@ public class GameServer {
         for (Character ch : temp) {
             builder.append(ch);
         }
+        dashes=builder.toString();
         return builder.toString();
     }
 
@@ -283,6 +288,27 @@ public class GameServer {
         }
         return false;
     }
+
+    public static String getWord() {
+        return word;
+    }
+
+    public static boolean once(){
+        if(flag1){
+            System.out.print("out");
+            flag1=false;
+            return true;
+        }
+        return flag1;
+    }
+
+    public static void setWord(String words) {
+        GameServer.word = word;
+    }
+
+
+
+    
 
   
 
