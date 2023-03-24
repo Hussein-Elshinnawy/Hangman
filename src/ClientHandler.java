@@ -74,6 +74,8 @@ public class ClientHandler implements Runnable {
                     out.println(("1.singleplayer 2.multiplayer"));
                     String playOp = in.readLine();
                     if (playOp.equals("1") || playOp.equals("singleplayer")) {
+                        Boolean playAgain=false;
+                        do{
                         attemptsleft = GameServer.getNumberOfAttempts();
                         String wordGen = GameServer.generateWord();
                         String msg = wordGen + "\n" + GameServer.firstState();
@@ -127,6 +129,15 @@ public class ClientHandler implements Runnable {
                             out.println("YOU WON CONGRATURLATIONS");
                         }
                         GameServer.resetTemp();
+                        
+                        out.println("do you want to play again y/n");
+                        String yn=in.readLine();
+                        if(yn.equals("y")){
+                            playAgain=true;
+                        }else{
+                            playAgain=false;
+                        }
+                    }while(playAgain);
                         
 
                         //////////////////////////////////////////////////////////////////////////////////////////////////
