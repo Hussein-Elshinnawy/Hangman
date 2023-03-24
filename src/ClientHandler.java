@@ -94,6 +94,7 @@ public class ClientHandler implements Runnable {
                             out.println(GameServer.printWordState(playerGuesses));
                             if(!GameServer.charFound()){
                                 attemptsleft--;
+                                out.println("number of attemptsleft = "+attemptsleft);
                             }
                            
                         }
