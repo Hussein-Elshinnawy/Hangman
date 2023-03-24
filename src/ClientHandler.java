@@ -14,7 +14,10 @@ public class ClientHandler implements Runnable {
     private static ArrayList<ClientHandler> clients;// static was not written before
     private static boolean logged = false;
     private static int attemptsleft;
-    private static int singleScore=0;
+    private static int winsSingleScore=0;
+    private static int lossSingleScore=0;
+    private static int winsMultiScore=0;
+    private static int lossMultiScore=0;
 
     public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
         this.client = clientSocket;
@@ -112,13 +115,32 @@ public class ClientHandler implements Runnable {
                             }
                         }
                         if (attemptsleft == 0) {
-
+                            try {
+                                FileWriter writer = new FileWriter("history.txt");
+                                writer.write(Integer.toString(winsSingleScore));
+                                writer.write(" ");
+                                writer.write(Integer.toString(++lossSingleScore));
+                                writer.write(" ");
+                                writer.write(Integer.toString(winsMultiScore));
+                                writer.write(" ");
+                                writer.write(Integer.toString(lossMultiScore));
+                                writer.close();
+                                
+                             } catch (IOException e) {
+                                
+                                e.printStackTrace();
+                             }
                             out.println("GAMEOVER YOU LOST \nyour are out of attempts the word was " + wordGen);
                         } else {
                             try {
                                 FileWriter writer = new FileWriter("history.txt");
-                                String sc=Integer.toString(++singleScore);
-                                writer.write(sc);
+                                writer.write(Integer.toString(++winsSingleScore));
+                                writer.write(" ");
+                                writer.write(Integer.toString(lossSingleScore));
+                                writer.write(" ");
+                                writer.write(Integer.toString(winsMultiScore));
+                                writer.write(" ");
+                                writer.write(Integer.toString(lossMultiScore));
                                 writer.close();
                                 
                              } catch (IOException e) {
@@ -224,17 +246,7 @@ public class ClientHandler implements Runnable {
                 } else {
                     out.println("Please login or register");
                 }
-                // if (request.contains("name")) {
-                // out.println(GameServer.getRandomName());
-                // } else if (request.startsWith("say")) {
-                // int firstSpace = request.indexOf(" ");
-                // if(firstSpace != -1){
-
-                // outToAll(request.substring(firstSpace+1));
-                // }
-                // } else {
-                // out.println("type name");
-                // }
+              
             }
         } catch (IOException e) {
             System.err.println("IO exception in client handler");
