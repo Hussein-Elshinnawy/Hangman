@@ -217,6 +217,9 @@ public class GameServer {
         // return temp;
 
     }
+    public static void resetTemp(){
+        temp.clear();
+    }
 
     public static void setPlayerTeam(char team, ClientHandler c) {
         if (team == 'a') {
@@ -271,6 +274,14 @@ public class GameServer {
     public static boolean charFound(){
         return flag;
 
+    }
+
+    public static boolean checkWin(String guess){
+        if(guess.equals(word))
+        {
+           return true;
+        }
+        return false;
     }
 
   

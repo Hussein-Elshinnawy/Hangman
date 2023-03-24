@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -13,7 +14,7 @@ public class ClientHandler implements Runnable {
     private static ArrayList<ClientHandler> clients;// static was not written before
     private static boolean logged = false;
     private static int attemptsleft;
-    
+    private static int singleScore=0;
 
     public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
         this.client = clientSocket;
@@ -22,7 +23,7 @@ public class ClientHandler implements Runnable {
         out = new PrintWriter(client.getOutputStream(), true);
         // out1 = new PrintWriter(client.getOutputStream(), true);
         this.logged = false;
-        
+
     }
 
     @Override
@@ -30,7 +31,7 @@ public class ClientHandler implements Runnable {
 
         try {
             while (true) {
-                attemptsleft=GameServer.getNumberOfAttempts();
+                // attemptsleft = GameServer.getNumberOfAttempts();
                 // out.println("number of theads");
                 // out.println(clients.size());
                 String request = in.readLine();
@@ -67,43 +68,67 @@ public class ClientHandler implements Runnable {
 
                 }
                 if (logged) {
-                    logged=false;
+                    logged = false;
                     out.println(("successfully logged in"));
 
                     out.println(("1.singleplayer 2.multiplayer"));
                     String playOp = in.readLine();
                     if (playOp.equals("1") || playOp.equals("singleplayer")) {
-
-                        int numberOfAtemp;
-                        String wordGen=GameServer.generateWord();
+                        attemptsleft = GameServer.getNumberOfAttempts();
+                        String wordGen = GameServer.generateWord();
                         String msg = wordGen + "\n" + GameServer.firstState();
                         out.println(msg);
                         GameServer.resetPlayerGuess();
 
                         out.println("please enter a guess");
-                        while(GameServer.isAttempts(attemptsleft)){
-                        String baba = in.readLine();
-                        //out.print(baba.isBlank());
-                        if(!baba.equals("logout")){
-                            // out.close();
-                            // in.close();
-                            
-                            //ArrayList<Character> playerGuesses = new ArrayList<>();
-                            Character playerGuesses = baba.charAt(0);
-                            out.println(playerGuesses);
-                            out.println(GameServer.printWordState(playerGuesses));
-                            if(!GameServer.charFound()){
-                                attemptsleft--;
-                                out.println("number of attemptsleft = "+attemptsleft);
-                            }
-                           
-                        }
-                        else{
-                                logged=false;
+                        while (GameServer.isAttempts(attemptsleft)) {
+                            String baba = in.readLine();
+                            // out.print(baba.isBlank());
+                            if (!baba.equals("logout")) {
+                                // out.close();
+                                // in.close();
+
+                                // ArrayList<Character> playerGuesses = new ArrayList<>();
+                                Character playerGuesses = baba.charAt(0);
+                                out.println(playerGuesses);
+                                String guess=GameServer.printWordState(playerGuesses);
+                                out.println(guess);
+                                if (!GameServer.charFound()) {
+                                    attemptsleft--;
+                                    out.println("number of attemptsleft = " + attemptsleft);
+                                }
+                                if(GameServer.checkWin(guess)){
+
+                                    break;
+                                }
+                               
+                                guess=null;
+
+                            } else {
+                                //logged = false;
                                 break;
                             }
                         }
-                        out.println("GAMEOVER YOU LOST \n your are out of attempts the word was "+ wordGen);
+                        if (attemptsleft == 0) {
+
+                            out.println("GAMEOVER YOU LOST \nyour are out of attempts the word was " + wordGen);
+                        } else {
+                            try {
+                                FileWriter writer = new FileWriter("history.txt");
+                                String sc=Integer.toString(++singleScore);
+                                writer.write(sc);
+                                writer.close();
+                                
+                             } catch (IOException e) {
+                                
+                                e.printStackTrace();
+                             }
+                       
+                            out.println("YOU WON CONGRATURLATIONS");
+                        }
+                        GameServer.resetTemp();
+                        
+
                         //////////////////////////////////////////////////////////////////////////////////////////////////
                     } else if (playOp.equals("2") || playOp.equals("multiplayer")) {
 
@@ -134,41 +159,40 @@ public class ClientHandler implements Runnable {
 
                         // String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
                         // out.println(msg);
-                        if(GameServer.firstTime()){
+                        if (GameServer.firstTime()) {
                             String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
                             outToAll(msg);
                         }
                         // String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
                         // outToAll(msg);
-                        //out.print("client number "+this+" "+this.client);
+                        // out.print("client number "+this+" "+this.client);
                         // in.reset();
                         // String baba = in.readLine();
                         // out.print(baba.isBlank());
                         GameServer.resetPlayerGuess();
-                        while(true){
-                        out.print("please enter a guess");
-                        String baba = in.readLine();
-                        if(baba.isBlank())
-                        {System.out.println("baba in empty");}
-                        if(!baba.equals("logout")){
-                            // out.close();
-                            // in.close();
-                            
-                            // ArrayList<Character> playerGuesses = new ArrayList<>();
-                            // playerGuesses.add(baba.charAt(0));
+                        while (true) {
+                            out.print("please enter a guess");
+                            String baba = in.readLine();
+                            if (baba.isBlank()) {
+                                System.out.println("baba in empty");
+                            }
+                            if (!baba.equals("logout")) {
+                                // out.close();
+                                // in.close();
 
-                            Character playerGuesses = baba.charAt(0);
-                            out.println(playerGuesses);
-                            out.println(GameServer.printWordState(playerGuesses));
-                           
-                        }
-                        else{
-                            out.print("quit");
-                            logged=false;
-                            break;
-                        }
-                       
-                        
+                                // ArrayList<Character> playerGuesses = new ArrayList<>();
+                                // playerGuesses.add(baba.charAt(0));
+
+                                Character playerGuesses = baba.charAt(0);
+                                out.println(playerGuesses);
+                                out.println(GameServer.printWordState(playerGuesses));
+
+                            } else {
+                                out.print("quit");
+                                logged = false;
+                                break;
+                            }
+
                         }
 
                         // GameServer.printWordState(playerGuesses);
@@ -216,11 +240,11 @@ public class ClientHandler implements Runnable {
         }
 
     }
+
     public void outToAll(String msg) {
         for (ClientHandler aClient : clients) {
             aClient.out.println(msg);
         }
     }
-    
 
 }
