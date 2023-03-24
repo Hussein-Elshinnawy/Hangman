@@ -213,13 +213,12 @@ public class ClientHandler implements Runnable {
                         }
 
                         out.println("waiting for other players to join");
-                        out.println(GameServer.allTeamReady());
+                        //out.println(GameServer.allTeamReady());
 
                         // String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
                         // out.println(msg);
 
                         if (GameServer.once()) {
-                            out.println("once");
                             String temp=GameServer.generateWord();
                             String dashes=GameServer.firstState();
                             GameServer.setWord(temp);
@@ -232,8 +231,31 @@ public class ClientHandler implements Runnable {
 
 
                         }
+
+                        while(true){
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } 
+                            if(GameServer.count==4){
+                                break;
+                            }
+                        }
+
+
+
                         out.println(GameServer.getWord());
                         out.println(GameServer.dashes);
+
+                            if(GameServer.count==2)
+                            {
+                                out.println("break");
+                                break;
+                            }
+                       
+                        out.println("helllo");
 
                         // if (GameServer.firstTime()) {
                         // String msg = GameServer.generateWord() + "\n" + GameServer.firstState();

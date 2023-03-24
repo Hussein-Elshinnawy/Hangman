@@ -46,6 +46,10 @@ public class GameServer {
 
     public static String dashes;
 
+    public static boolean allReady;
+
+    public static int count=0;
+
     // private static ArrayList<Character> playerguess = new ArrayList<>();
 
     
@@ -234,6 +238,7 @@ public class GameServer {
             teamB.add(c);
             System.out.println(c.toString() + " has joined team b");
         }
+        count++;
     }
 
     public static String evenTeam() {
