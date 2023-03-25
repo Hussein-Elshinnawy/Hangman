@@ -66,6 +66,10 @@ public class GameServer {
 
     public static int count=0;
 
+    public static int order=0;
+
+    public static String gameOrder[]= {"teamA","teamA","teamB","teamB"};
+
     // private static ArrayList<Character> playerguess = new ArrayList<>();
 
     
@@ -148,13 +152,13 @@ public class GameServer {
 
             while ((line = br.readLine()) != null) {
                 String[] split = line.split(" ");
-                if (split[0].equals(arr[0]) && split[1].equals(arr[1])) {
+                if (split[1].equals(arr[0]) && split[2].equals(arr[1])) {
                     usernameFound = true;
                     passwordFound = true;
                     break;
-                } else if (split[0].equals(arr[0]) && !split[1].equals(arr[1])) {
+                } else if (split[1].equals(arr[0]) && !split[2].equals(arr[1])) {
                     wrongPassword = true;
-                } else if (!split[0].equals(arr[0]) && split[1].equals(arr[1])) {
+                } else if (!split[1].equals(arr[0]) && split[2].equals(arr[1])) {
                     wrongpUsername = true;
                 }
             }
@@ -183,6 +187,8 @@ public class GameServer {
         FileWriter myWriter;
         try {
             FileWriter fw = new FileWriter("config.txt", true); // true - enables appending mode
+            fw.write(arr[0]);
+            fw.write(" ");
             fw.write(arr[1]);
             fw.write(" ");
             fw.write(arr[2]);
@@ -405,6 +411,17 @@ public class GameServer {
         return builder.toString();
         // return temp;
 
+    }
+
+
+    public static boolean turn(String team)
+    {
+        //order=order%2;
+        if(gameOrder[order].equals(team)){ //0 1 2 3 4
+            // order++;
+            return true;
+        }
+        return false;
     }
 
 

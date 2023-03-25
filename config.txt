@@ -1,12 +1,5 @@
-user pass
-hasbi hasbi
-simo simo
-clork pass
-ok ok
-ok ok
-lol lol
-a a
-b b
-c c
-ho ho
-t t
+name user pass
+hasbi hasbi hasbi
+simo simo simo
+huss clork pass
+bomba bomba bomba
