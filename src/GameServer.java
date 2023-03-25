@@ -26,6 +26,10 @@ public class GameServer {
 
     private static String word;
 
+    private static String wordA;
+
+    private static String wordB;
+
     private static ArrayList<ClientHandler> teamA = new ArrayList<>();
 
     private static ArrayList<ClientHandler> teamB = new ArrayList<>();
@@ -34,13 +38,25 @@ public class GameServer {
 
     private static ArrayList<Character> temp = new ArrayList<>();
 
+    private static ArrayList<Character> tempA = new ArrayList<>();
+
+    private static ArrayList<Character> tempB = new ArrayList<>();
+
     private static int numberOfAttempts;
+
+    public static int numberOfAttemptsA;
+
+    public static int numberOfAttemptsB;
 
     private static int minNumTeams;
 
     private static int maxNumTeams;
 
     public static boolean flag;
+
+    public static boolean flagA;
+
+    public static boolean flagB;
 
     public static boolean flag1=true;
 
@@ -72,6 +88,10 @@ public class GameServer {
                 String[] split = line.split(" ");
 
                 numberOfAttempts = Integer.parseInt(split[0]);
+
+                numberOfAttemptsA = Integer.parseInt(split[0]);
+
+                numberOfAttemptsB = Integer.parseInt(split[0]);
 
                 minNumTeams = Integer.parseInt(split[1]);
 
@@ -184,6 +204,8 @@ public class GameServer {
     public static String generateWord() {
         Random random = new Random();
         word = words.get(random.nextInt(words.size()));
+        wordA=word;
+        wordB=word;
         return word;
     }
 
@@ -191,6 +213,17 @@ public class GameServer {
 
         for (int i = 0; i < word.length(); i++) {
             temp.add('-');
+            
+            // System.out.print("*");
+        }
+        for (int i = 0; i < wordA.length(); i++) {
+            tempA.add('-');
+            
+            // System.out.print("*");
+        }
+        for (int i = 0; i < wordB.length(); i++) {
+            tempB.add('-');
+            
             // System.out.print("*");
         }
         StringBuilder builder = new StringBuilder(word.length());
@@ -201,21 +234,14 @@ public class GameServer {
         return builder.toString();
     }
 
-    public static String printWordState(Character Guesses) {// b
-        // ArrayList<Character> temp = new ArrayList<>();// b------
+    public static String printWordState(Character Guesses) {
         flag=false;
         for (int i = 0; i < word.length(); i++) {// border
             if (Character.toLowerCase(Guesses) == Character.toLowerCase(word.charAt(i))) {//
-                // System.out.println("character "+ word.charAt(i));
                 temp.set(i, word.charAt(i));
                 flag=true;
-                // System.out.println(temp.toString());
-                // System.out.print(word.charAt(i));
             }
-            // else {
-            // temp.set(i, '-');
-            // // System.out.print("-");
-            // }
+       
         }
         StringBuilder builder = new StringBuilder(word.length());
         for (Character ch : temp) {
@@ -285,9 +311,31 @@ public class GameServer {
         return flag;
 
     }
+    public static boolean charFoundA(){
+        return flagA;
+
+    }
+    public static boolean charFoundB(){
+        return flagB;
+
+    }
 
     public static boolean checkWin(String guess){
         if(guess.equals(word))
+        {
+           return true;
+        }
+        return false;
+    }
+    public static boolean checkWinA(String guess){
+        if(guess.equals(wordA))
+        {
+           return true;
+        }
+        return false;
+    }
+    public static boolean checkWinB(String guess){
+        if(guess.equals(wordB))
         {
            return true;
         }
@@ -300,7 +348,7 @@ public class GameServer {
 
     public static boolean once(){
         if(flag1){
-            System.out.print("out");
+            //System.out.print("out");
             flag1=false;
             return true;
         }
@@ -309,6 +357,34 @@ public class GameServer {
 
     public static void setWord(String words) {
         GameServer.word = word;
+    }
+
+    public static String whichTeam(ClientHandler c){
+        if(teamA.contains(c)){
+            return "teamA";
+        }else{
+            return "teamB";
+        }
+    }
+
+    public static String teamAprintWordState(Character Guesses) {
+        flagA=false;
+        for (int i = 0; i < wordA.length(); i++) {// border
+            if (Character.toLowerCase(Guesses) == Character.toLowerCase(wordA.charAt(i))) {//
+            
+                tempA.set(i, wordA.charAt(i));
+                flagA=true;
+            }
+       
+        }
+        StringBuilder builder = new StringBuilder(word.length());
+        for (Character ch : tempA) {
+            builder.append(ch);
+        }
+        System.out.println(builder.toString());
+        return builder.toString();
+        // return temp;
+
     }
 
 
