@@ -387,6 +387,26 @@ public class GameServer {
 
     }
 
+    public static String teamBprintWordState(Character Guesses) {
+        flagB=false;
+        for (int i = 0; i < wordB.length(); i++) {// border
+            if (Character.toLowerCase(Guesses) == Character.toLowerCase(wordB.charAt(i))) {//
+            
+                tempB.set(i, wordB.charAt(i));
+                flagB=true;
+            }
+       
+        }
+        StringBuilder builder = new StringBuilder(word.length());
+        for (Character ch : tempB) {
+            builder.append(ch);
+        }
+        System.out.println(builder.toString());
+        return builder.toString();
+        // return temp;
+
+    }
+
 
 
     

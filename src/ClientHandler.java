@@ -244,9 +244,10 @@ public class ClientHandler implements Runnable {
                         out.println(word);
                         out.println(GameServer.dashes);
 
-                        out.println(GameServer.whichTeam(this));
+                        
                         if(GameServer.whichTeam(this).equals("teamA"))
                         {
+                            out.println(GameServer.whichTeam(this));
                             attemptsleftA=GameServer.numberOfAttemptsA;
                             out.println("please enter a guess");
                             String baba = in.readLine();
@@ -326,7 +327,83 @@ public class ClientHandler implements Runnable {
 
                             
                         }else if(GameServer.whichTeam(this).equals("teamB")){
+                            out.println(GameServer.whichTeam(this));
+                            attemptsleftB=GameServer.numberOfAttemptsB;
+                            out.println("please enter a guess");
+                            String baba = in.readLine();
+                            while (GameServer.isAttempts(attemptsleftB)) {
+                                baba = in.readLine();
+                                if (!baba.equals("logout")) {
+                                    
+                                    Character playerGuesses = baba.charAt(0);
+                                   
+                                    String guess = GameServer.teamBprintWordState(playerGuesses);
+                                    out.println(guess);
+                                    if (!GameServer.charFoundB()){
+                                        attemptsleftB--;
+                                        out.println("number of attemptsleft = " + attemptsleftB);
+                                    }
+                                    if (GameServer.checkWinA(guess)) {
 
+                                        break;
+                                    }
+
+                                    guess = null;
+
+                                } else {
+                                    // logged = false;
+                                    break;
+                                }
+                            }
+                            if (attemptsleftB == 0) {
+                                try {
+                                    FileWriter writer = new FileWriter("history.txt");
+                                    FileReader reader = new FileReader("history.txt");
+                                    BufferedReader bufferedReader = new BufferedReader(reader);
+                                    if (bufferedReader.readLine() == null) {
+                                        // writer.write(System.lineSeparator()); // add new line if there is existing
+                                        // content
+                                        writer.write(Integer.toString(winsSingleScore));
+                                        writer.write(" ");
+                                        writer.write(Integer.toString(lossSingleScore));
+                                        writer.write(" ");
+                                        writer.write(Integer.toString(winsMultiScore));
+                                        writer.write(" ");
+                                        writer.write(Integer.toString(++lossMultiScore));
+                                    }
+                                    bufferedReader.close();
+                                    writer.close();
+
+                                } catch (IOException e) {
+
+                                    e.printStackTrace();
+                                }
+                                out.println("GAMEOVER YOU LOST \nyour are out of attempts the word was " + word);
+                            } else {
+                                try {
+                                    FileWriter writer = new FileWriter("history.txt");
+                                    FileReader reader = new FileReader("history.txt");
+                                    BufferedReader bufferedReader = new BufferedReader(reader);
+                                    if (bufferedReader.readLine() == null) {
+                                        writer.write(Integer.toString(winsSingleScore));
+                                        writer.write(" ");
+                                        writer.write(Integer.toString(lossSingleScore));
+                                        writer.write(" ");
+                                        writer.write(Integer.toString(++winsMultiScore));
+                                        writer.write(" ");
+                                        writer.write(Integer.toString(lossMultiScore));
+                                    }
+                                    bufferedReader.close();
+                                    writer.close();
+
+                                } catch (IOException e) {
+
+                                    e.printStackTrace();
+                                }
+
+                                out.println("YOU WON CONGRATURLATIONS");
+                            }
+                            GameServer.resetTemp();
                         }
         
 
