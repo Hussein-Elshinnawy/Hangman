@@ -62,8 +62,6 @@ public class GameServer {
 
     public static String dashes;
 
-    public static boolean allReady;
-
     public static int count=0;
 
     public static int order=0;
@@ -74,7 +72,6 @@ public class GameServer {
 
     public static int name=0;
 
-    // private static ArrayList<Character> playerguess = new ArrayList<>();
 
     
     public static void main(String[] args) throws IOException {
@@ -121,14 +118,6 @@ public class GameServer {
             pool.execute(clientThread);
         }
 
-        // PrintWriter out = new PrintWriter(client.getOutputStream(), true);// to send
-        // to client
-        // BufferedReader in = new BufferedReader(new
-        // InputStreamReader(client.getInputStream()));// to read from client
-
-        // System.out.println("server is closing");
-        // listener.close();
-        // client.close();
     }
 
     public static String login(String usernameNpassword) {
@@ -277,13 +266,6 @@ public class GameServer {
     public static boolean firstTime() {
         if (first) {
             first = false;
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean allTeamReady() {
-        if (teamA.size() == 2 && teamB.size() == 2) {
             return true;
         }
         return false;

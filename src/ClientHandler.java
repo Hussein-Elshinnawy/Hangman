@@ -13,7 +13,6 @@ public class ClientHandler implements Runnable {
     private Socket client;
     private BufferedReader in;
     private PrintWriter out;
-    // private PrintWriter out1;
     private static ArrayList<ClientHandler> clients;// static was not written before
     private static boolean logged = false;
     private static int attemptsleft;
@@ -21,8 +20,6 @@ public class ClientHandler implements Runnable {
     private static int attemptsleftB;
     private int winsSingleScore = 0;
     private int lossSingleScore = 0;
-    private static int winsMultiScore = 0;
-    private static int lossMultiScore = 0;
     private static String usernameNpassword = "";
 
     public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
@@ -30,7 +27,6 @@ public class ClientHandler implements Runnable {
         this.clients = clients;
         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
         out = new PrintWriter(client.getOutputStream(), true);
-        // out1 = new PrintWriter(client.getOutputStream(), true);
         this.logged = false;
 
     }
@@ -41,9 +37,6 @@ public class ClientHandler implements Runnable {
         try {
             while (true) {
                 FileWriter writer = new FileWriter("history.txt", true);
-                // attemptsleft = GameServer.getNumberOfAttempts();
-                // out.println("number of theads");
-                // out.println(clients.size());
                 String request = in.readLine();
 
                 if ((request.equals("login") || request.equals("1")) && logged == false) {
@@ -74,8 +67,6 @@ public class ClientHandler implements Runnable {
 
                     }
 
-                    // continue;
-
                 }
                 if (logged) {
                     logged = false;
@@ -95,14 +86,10 @@ public class ClientHandler implements Runnable {
                             out.println("please enter a guess");
                             while (GameServer.isAttempts(attemptsleft)) {
                                 String baba = in.readLine();
-                                // out.print(baba.isBlank());
                                 if (!baba.equals("logout")) {
-                                    // out.close();
-                                    // in.close();
 
-                                    // ArrayList<Character> playerGuesses = new ArrayList<>();
                                     Character playerGuesses = baba.charAt(0);
-                                    // out.println(playerGuesses);
+
                                     String guess = GameServer.printWordState(playerGuesses);
                                     out.println(guess);
                                     if (!GameServer.charFound()) {
@@ -117,13 +104,13 @@ public class ClientHandler implements Runnable {
                                     guess = null;
 
                                 } else {
-                                    // logged = false;
+                                  
                                     break;
                                 }
                             }
                             if (attemptsleft == 0) {
                                 try {
-                                    // FileWriter writer = new FileWriter("history.txt");
+                                   
                                     FileReader reader = new FileReader("history.txt");
                                     BufferedReader bufferedReader = new BufferedReader(reader);
                                     lossSingleScore = 0;
@@ -160,37 +147,9 @@ public class ClientHandler implements Runnable {
                             }
                         } while (playAgain);
 
-                        // try {
-                        //     writer = new FileWriter("history.txt", true);
-                        //     FileReader reader = new FileReader("history.txt");
-                        //     BufferedReader bufferedReader = new BufferedReader(reader);
-                        //     if (bufferedReader.readLine() != null) {
-
-                        //         writer.write("\r\n");
-                        //     }
-
-                        //     bufferedReader.close();
-                        //     writer.close();
-
-                        // } catch (IOException e) {
-
-                        //     e.printStackTrace();
-                        // }
 
                         //////////////////////////////////////////////////////////////////////////////////////////////////
                     } else if (playOp.equals("2") || playOp.equals("multiplayer")) {
-                        
-                        // if(once){
-                        // once=false;
-
-                        // out.print("1v1 or 2v2");
-                        // String vs=in.readLine();
-                        // if(vs.equals("1")){
-                        // numberOfTeams=2;
-                        // }else{
-                        // numberOfTeams=4;
-                        // }
-                        // }
 
                         out.println("a.team b.team");
 
@@ -206,13 +165,8 @@ public class ClientHandler implements Runnable {
                             out.print("no space in team b your are team a");
                             GameServer.setPlayerTeam('a', this);
                         }
-                        out.println("before ="+usernameNpassword);
+                        
                         out.println("waiting for other players to join");
-                        // out.println(GameServer.allTeamReady());
-
-                        // String msg = GameServer.generateWord() + "\n" + GameServer.firstState();
-                        // out.println(msg);
-
                         if (GameServer.once()) {
                             String temp = GameServer.generateWord();
                             String dashes = GameServer.firstState();
@@ -226,7 +180,7 @@ public class ClientHandler implements Runnable {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
-                            if (GameServer.count == 4 /* || GameServer.count==2 */) {
+                            if (GameServer.count == 4) {
                                 break;
                             }
                         }
@@ -240,7 +194,7 @@ public class ClientHandler implements Runnable {
                             attemptsleftA = GameServer.numberOfAttemptsA;
 
                             out.println("please enter a guess");
-                            System.out.println("--> ");
+                            // out.println("--> ");
                             String baba = in.readLine();/// bug
                             while (GameServer.isAttempts(attemptsleftA)) {
 
@@ -248,7 +202,7 @@ public class ClientHandler implements Runnable {
                                     try {
                                         Thread.sleep(1000);
                                     } catch (InterruptedException e) {
-                                        // TODO Auto-generated catch block
+                                       
                                         e.printStackTrace();
                                     }
                                     if (GameServer.turn(GameServer.whichTeam(this))) {
@@ -256,7 +210,7 @@ public class ClientHandler implements Runnable {
                                     }
                                 }
                                 
-                                System.out.println("--> ");
+                                out.println("--> ");
                                 baba = in.readLine();
                                 if (!baba.equals("logout")) {
 
@@ -272,29 +226,20 @@ public class ClientHandler implements Runnable {
 
                                         break;
                                     }
-                                    out.println(GameServer.order);
+                                    
                                     GameServer.order = (++GameServer.order) % 4;
-                                    out.println(GameServer.order);
+                                   
 
                                     guess = null;
 
                                 } else {
-                                    // logged = false;
+                                    
                                     break;
                                 }
-                                // GameServer.order=(++GameServer.order)%4;
+                              
                             }
                             if (attemptsleftA == 0) {
 
-                                // writer.write(System.lineSeparator()); // add new line if there is existing
-                                // content
-                                // writer.write(Integer.toString(winsSingleScore));
-                                // writer.write(" ");
-                                // writer.write(Integer.toString(lossSingleScore));
-                                // writer.write(" ");
-                                // writer.write(Integer.toString(winsMultiScore));
-                                // writer.write(" ");
-                                // writer.write(Integer.toString(++lossMultiScore));
                                 lossSingleScore = 0;
                                 usernameNpassword=GameServer.getName();
                                 ++GameServer.name;
@@ -335,7 +280,7 @@ public class ClientHandler implements Runnable {
                             }
 
                             out.println("please enter a guess");
-                            System.out.println("--> ");
+                            //out.println("--> ");
                             String baba = in.readLine();
                             while (GameServer.isAttempts(attemptsleftB)) {
 
@@ -350,7 +295,7 @@ public class ClientHandler implements Runnable {
                                         break;
                                     }
                                 }
-                                System.out.print("--> ");
+                                out.println("--> ");
                                 baba = in.readLine();
                                 if (!baba.equals("logout")) {
 
@@ -366,9 +311,9 @@ public class ClientHandler implements Runnable {
 
                                         break;
                                     }
-                                    out.println(GameServer.order);
+                                    
                                     GameServer.order = (++GameServer.order) % 4;
-                                    out.println(GameServer.order);
+                                  
 
                                     guess = null;
 
