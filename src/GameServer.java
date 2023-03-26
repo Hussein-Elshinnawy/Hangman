@@ -70,6 +70,10 @@ public class GameServer {
 
     public static String gameOrder[]= {"teamA","teamA","teamB","teamB"};
 
+    public static ArrayList<String> namesPass= new ArrayList<>();
+
+    public static int name=0;
+
     // private static ArrayList<Character> playerguess = new ArrayList<>();
 
     
@@ -107,18 +111,6 @@ public class GameServer {
             e.printStackTrace();
         }
 
-        // try {
-        // File myObj = new File("gameConfiguration.txt");
-        // if (myObj.createNewFile()) {
-        // System.out.println("history created: " + myObj.getName());
-
-        // } else {
-        // System.out.println("File already exists.");
-        // }
-        // } catch (IOException e) {
-        // System.out.println("An error occurred.");
-        // e.printStackTrace();
-        // }
 
         while (true) {
             System.out.println("server is waiting for client");
@@ -422,6 +414,16 @@ public class GameServer {
             return true;
         }
         return false;
+    }
+
+    public static void setNames(String userpass){
+        namesPass.add(userpass);
+    }
+
+    public static String getName(){
+       
+        return namesPass.get(name);
+
     }
 
 
